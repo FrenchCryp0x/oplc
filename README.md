@@ -2,7 +2,7 @@
 
 **A privacy‑preserving, open‑source web app that lets anyone check if a password appears in known breach corpora — without sending the password to the server.**
 
-Live App: **https://r3ddkahili-oplc-ui.hf.space**  
+Live App: **https://huggingface.co/spaces/r3ddkahili/oplc-ui**  
 API Docs: **https://r3ddkahili-oplc-api.hf.space/docs**
 
 > TL;DR: Your browser hashes the password with SHA‑1 and only sends the first **5 hex characters** of the hash (k‑anonymity). The API replies with a bucket of suffixes and counts; the match happens locally in your browser. No plaintext passwords, no full hashes, no cookies.
@@ -53,7 +53,7 @@ No password or full hash is ever transmitted or stored.
 ---
 
 ## 🚀 Quick start (use it)
-- Visit **https://r3ddkahili-oplc-ui.hf.space**
+- Visit **https://huggingface.co/spaces/r3ddkahili/oplc-ui**
 - Type a password → click **Check** (or press **Enter**)
 - Toggle **Show** to verify your input if needed
 
