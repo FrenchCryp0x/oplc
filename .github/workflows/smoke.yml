@@ -1,40 +1,40 @@
-# .github/workflows/smoke.yml
 name: smoke
 
-on: [push, pull_request, workflow_dispatch]
 
-env:
-  API: https://r3ddkahili-oplc-api.hf.space
-  UI:  https://r3ddkahili-oplc-ui.hf.space
+on:
+push:
+pull_request:
+workflow_dispatch:
+schedule:
+- cron: '18 */6 * * *' # every 6 hours for uptime
+
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - name: Healthz (with retries)
-        run: |
-          for i in {1..5}; do
-            if curl -fsS --max-time 10 "$API/healthz" | grep -xq 'ok'; then
-              echo "healthz ok"; exit 0; fi
-            echo "retry $i..." && sleep 5
-          done
-          echo "::error::/healthz failed after retries"; exit 1
+test:
+runs-on: ubuntu-latest
+timeout-minutes: 5
+steps:
+- name: Check API /healthz
+run: |
+curl -sSf https://r3ddkahili-oplc-api.hf.space/healthz | grep -x 'ok'
 
-      - name: Range check for known prefix (password)
-        run: |
-          curl -fsS --retry 3 --retry-all-errors "$API/range/5BAA6" \
-            | grep -q '1E4C9B93F3F0682250B6CF8331B7EE68FD8'
 
-      - name: Verify local SHA-1 (sanity)
-        run: |
-          python - <<'PY'
-          import hashlib
-          assert hashlib.sha1(b'password').hexdigest().upper() == '5BAA61E4C9B93F3F0682250B6CF8331B7EE68FD8'
-          print('ok')
-          PY
+- name: Check /range for known prefix (password)
+run: |
+curl -sSf https://r3ddkahili-oplc-api.hf.space/range/5BAA6 \
+| grep -q '1E4C9B93F3F0682250B6CF8331B7EE68FD8'
 
-      - name: UI reachable (homepage contains title)
-        run: |
-          curl -fsS --retry 3 --retry-all-errors "$UI/" \
-            | grep -q 'Open Password Leak Check'
+
+- name: Verify client SHA-1 (hash of "password")
+run: |
+python - <<'PY'
+import hashlib
+h = hashlib.sha1(b'password').hexdigest().upper()
+assert h == '5BAA61E4C9B93F3F0682250B6CF8331B7EE68FD8'
+print('ok')
+PY
+
+
+- name: UI reachable
+run: |
+curl -sSf https://r3ddkahili-oplc-ui.hf.space/ | grep -q 'Open Password Leak Check'
