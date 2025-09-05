@@ -1,6 +1,6 @@
 # Open Password Leak Check (OPLC)
 
-**A privacy‑preserving, open‑source web app that lets anyone check if a password appears in known breach corpora — without sending the password to the server.**
+**A privacy‑preserving, open‑source web app that lets anyone check if a password appears in known breach corpora without sending the password to the server.**
 
 Live App: **https://huggingface.co/spaces/r3ddkahili/oplc-ui**  
 API Docs: **https://r3ddkahili-oplc-api.hf.space/docs**
