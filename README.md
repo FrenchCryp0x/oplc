@@ -29,6 +29,28 @@ No password or full hash is ever transmitted or stored.
 
 ---
 
+## 📚 Dataset
+- **Upstream dataset:** **Pwned Passwords** (Have I Been Pwned). This is a publicly available corpus of **SHA‑1 hashed passwords with breach counts**. We use it in two ways:
+  - **Proxy mode (default):** the API forwards k‑anonymous range lookups to the official **Pwned Passwords Range API** with response padding enabled. No dataset hosting is required on our side.
+  - **Self‑hosted mirror (optional):** for research/independence, you can ingest the latest Pwned Passwords into **prefix‑grouped shards** and publish them as a **Hugging Face Dataset** (`data/pp-XX.jsonl.zst`, records: `{prefix, suffix, count}`). The API can then serve from this mirror by setting `BACKEND_MODE=hf`.
+- **Notes & ethics:** Use the dataset for **defensive purposes** only. Review the upstream terms before mirroring. This project does **not** store plaintext passwords and never transmits full hashes.
+
+---
+
+## ⚠️ Important disclaimer
+**This project is an assistive tool only. Do not rely on it as your sole security check.** A result of “Not found” does **not** guarantee safety, and a positive result only indicates the password has appeared in public breach corpora. Always use a password manager to generate unique, strong passwords, and enable multi‑factor authentication (MFA). Consider additional defenses like breach monitoring and device security.
+
+### Why this project exists (caveat)
+This is **not a replacement** for existing services like Have I Been Pwned (HIBP). It’s a transparent, open‑source **reference implementation** you can audit, learn from, and self‑host.
+
+- **Education & capstone value:** shows end‑to‑end k‑anonymity, padding, strict CSP, and CI/monitoring.
+- **Trust & transparency:** 100% open code, no cookies or tracking; everything verifiable.
+- **Customization:** change UX copy, language, policy guidance, or integrate into your org.
+- **Independence option:** mirror mode (HF Datasets) if upstream is rate‑limited/unavailable.
+- **Research playground:** try enhancements (e.g., stronger padding, PIR) without depending on third‑party releases.
+
+If you just want a ready service, you can use HIBP directly; see **References** below. If you want an **auditable, forkable, cloud‑only blueprint**, use this project.
+
 ## 🔐 Privacy & Security
 - **No plaintext**: your password never leaves your device.
 - **No full hashes**: the server only sees a 5‑char prefix.
@@ -168,4 +190,16 @@ MIT (see `LICENSE`).
 ## 🙏 Acknowledgments
 - The password range‑query approach popularized by defenders to reduce exposure risk.
 - The open‑source community around privacy‑preserving security tooling.
+
+
+
+---
+
+## 📎 References
+- Pwned Passwords (Have I Been Pwned): https://haveibeenpwned.com/Passwords
+- Pwned Passwords Range API (k‑anonymity): https://haveibeenpwned.com/API/v3#PwnedPasswords
+- Example range endpoint: https://api.pwnedpasswords.com/range/5BAA6
+- MDN Web Crypto API (SubtleCrypto.digest): https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest
+- FastAPI documentation: https://fastapi.tiangolo.com/
+- Hugging Face Spaces overview: https://huggingface.co/docs/hub/spaces-overview
 
