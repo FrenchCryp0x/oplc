@@ -71,11 +71,10 @@ jobs:
               if [ "$STATUS" -ge 200 ] && [ "$STATUS" -lt 400 ]; then
                 HTML="$(curl -sS -L -A "$UA" "$UI$path")" || true
                 echo "$HTML" | head -n 40
-                echo "$HTML" | tr -d '
-' | sed 's/&nbsp;/ /g' \
+                echo "$HTML" | tr -d '\r' | sed 's/&nbsp;/ /g' \
                   | grep -qiE '<title>.*open password leak check.*</title>|open password leak check' && exit 0
               fi
             done
             sleep 5
           done
-          echo "::error::UI not reachable or title not found"; exit 1
+          echo "::error::UI not reachable or title not found" ; exit 1
